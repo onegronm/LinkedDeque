@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedDeque<Item> implements Iterable<Item> {
 	
@@ -8,6 +9,7 @@ public class LinkedDeque<Item> implements Iterable<Item> {
 	private class Node {
 		Item item;
 		Node next;
+		Node previous;
 	}
 	
 	/**
@@ -38,18 +40,39 @@ public class LinkedDeque<Item> implements Iterable<Item> {
 	/**
 	 * Add the item to the front
 	 */
-	public void addFirst(Item item) {
+	public void addFirst(Item item) {		
+		if(item == null)
+			throw new IllegalArgumentException("Null argument provided.");
+			
 		Node oldFirst = first;
-		first = new Node();
-		first.item = item;
-		first.next = oldFirst; // Constant worst-case time
+		
+		Node newNode = new Node();
+		newNode.item = item;
+		
+		if(isEmpty()) {
+			// case for first item inserted,
+			// next and previous pointers are null
+			// this is also the last node
+			newNode.next = null;
+			newNode.previous = null;
+			last = newNode;
+		}
+		else {
+			newNode.next = oldFirst;
+			newNode.previous = null; // first node doesn't have a previous
+			oldFirst.previous = newNode; // update oldFirst 'previous' to newNode
+		}
+		
+		first = newNode; // update first pointer to newNode
+		
+		n++; // increment node count
 	}
 		
 	/**
 	 * Add item to the back
 	 * @param item: the item to insert into the deque
 	 */
-	public void addLast(Item item) {
+	public void addLast(Item item) {		
 		Node oldLast = last;
 		last = new Node();
 		last.item = item;
@@ -62,10 +85,17 @@ public class LinkedDeque<Item> implements Iterable<Item> {
 	 * Remove and return the item from the front
 	 * @return
 	 */
-	public Item removeFirst() {
-		Item item = first.item; // Pointer to the item, not to the node!
+	public Item removeFirst() {		
+		if(isEmpty()) {
+			throw new NoSuchElementException("Deque is empty.");
+		}
+		
+		Item item = first.item; // pointer to the item, not to the node
 		first = first.next;
+		n--;
+		
 		if(isEmpty()) last = null;
+		
 		return item;
 	}
 	
@@ -76,10 +106,19 @@ public class LinkedDeque<Item> implements Iterable<Item> {
 	// }
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
+		LinkedDeque<String> d = new LinkedDeque<String>();
 		
-		LinkedDeque<Integer> d = new LinkedDeque<Integer>();
-		
+		d.addFirst("a");
+		d.addFirst("b");
+		d.addFirst("c");
+		d.removeFirst();
+		d.removeFirst();
+		d.removeFirst();		
+		System.out.println(d.size());
+		d.addFirst("a");
+		d.removeFirst();
+		// d.removeFirst(); Deque is empty()
 	}
 
 	// return an iterator over items in order from front to back
