@@ -1,7 +1,7 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedDeque<Item> implements Iterable<Item> {
+public class Deque<Item> implements Iterable<Item> {
 	
 	private int n; // the size of the deque
 	private Node first, last; // the front and rear of the deque
@@ -16,7 +16,7 @@ public class LinkedDeque<Item> implements Iterable<Item> {
 	 * Construct an empty deque
 	 * @param <T>
 	 */
-	public <T> LinkedDeque() {
+	public <T> Deque() {
 		first = null;
 		last = null;
 	}
@@ -118,7 +118,7 @@ public class LinkedDeque<Item> implements Iterable<Item> {
 	
 	
 	public static void main(String[] args) {		
-		LinkedDeque<String> d = new LinkedDeque<String>();
+		Deque<String> d = new Deque<String>();
 		
 		String item = new String();
 		d.addFirst("a");
