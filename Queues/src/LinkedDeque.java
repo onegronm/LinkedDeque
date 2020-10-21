@@ -74,11 +74,16 @@ public class LinkedDeque<Item> implements Iterable<Item> {
 	 */
 	public void addLast(Item item) {		
 		Node oldLast = last;
+		
 		last = new Node();
 		last.item = item;
 		last.next = null;
+		last.previous = oldLast;
+		
 		if(isEmpty()) first = last;
 		else oldLast.next = last; // Constant worst-case time
+		
+		n++;
 	}
 	
 	/**
@@ -99,26 +104,43 @@ public class LinkedDeque<Item> implements Iterable<Item> {
 		return item;
 	}
 	
-	// public Item removeLast() {
-		// Item lastItem = last.item;
+	public Item removeLast() {
+		if(isEmpty()) {
+			throw new NoSuchElementException("Deque is empty.");
+		}
 		
-		// need to implement a doubly-linked list
-	// }
+		Item item = last.item;
+		last = last.previous;
+		n--;
+		
+		return item;
+	}
 	
 	
 	public static void main(String[] args) {		
 		LinkedDeque<String> d = new LinkedDeque<String>();
 		
+		String item = new String();
 		d.addFirst("a");
 		d.addFirst("b");
 		d.addFirst("c");
-		d.removeFirst();
-		d.removeFirst();
-		d.removeFirst();		
+		System.out.println(d.size());
+		item = d.removeFirst();
+		item = d.removeFirst();
+		item = d.removeFirst();		
 		System.out.println(d.size());
 		d.addFirst("a");
-		d.removeFirst();
+		item = d.removeFirst();
 		// d.removeFirst(); Deque is empty()
+		d.addLast("a");
+		d.addLast("b");
+		d.addLast("c");
+		System.out.println(d.size());
+		item = d.removeLast();
+		item = d.removeLast();
+		item = d.removeLast();
+		System.out.println(d.size());
+		item = null;
 	}
 
 	// return an iterator over items in order from front to back
