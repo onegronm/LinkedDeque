@@ -124,29 +124,55 @@ public class Deque<Item> implements Iterable<Item> {
 		d.addFirst("a");
 		d.addFirst("b");
 		d.addFirst("c");
-		System.out.println(d.size());
+		//System.out.println(d.size());
 		item = d.removeFirst();
 		item = d.removeFirst();
 		item = d.removeFirst();		
-		System.out.println(d.size());
+		//System.out.println(d.size());
 		d.addFirst("a");
 		item = d.removeFirst();
 		// d.removeFirst(); Deque is empty()
 		d.addLast("a");
 		d.addLast("b");
 		d.addLast("c");
-		System.out.println(d.size());
+		//System.out.println(d.size());
 		item = d.removeLast();
 		item = d.removeLast();
 		item = d.removeLast();
-		System.out.println(d.size());
+		//System.out.println(d.size());
 		item = null;
+		
+		for(String s: d)
+			System.out.println(s);
 	}
 
 	// return an iterator over items in order from front to back
 	@Override
 	public Iterator<Item> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ListIterator();
+	}
+	
+	private class ListIterator implements Iterator<Item>{
+
+		private Node current = first;
+		
+		@Override
+		public boolean hasNext() {
+			return current != null;
+		}
+
+		@Override
+		public Item next() {
+			if (current == null)
+				throw new NoSuchElementException();
+			
+			Item item = current.item;
+			current = current.next;
+			return item;
+		}
+		
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}		
 	}
 }
